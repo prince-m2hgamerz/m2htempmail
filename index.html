@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>M2H Temp Mail | Premium SaaS</title>
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+
+    <style>
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-100: #111111;
+            --gray-200: #333333;
+            --gray-400: #888888;
+            --border: #333333;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        html, body { height: 100%; }
+
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            font-family: var(--font);
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 20px;
+            flex: 1 0 auto;
+        }
+
+        /* NAVIGATION */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.05em;
+        }
+
+        .brand-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--white);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        /* HERO SECTION */
+        .hero { margin-bottom: 40px; }
+        .hero h1 { font-size: clamp(2.2rem, 8vw, 3.5rem); font-weight: 800; letter-spacing: -0.06em; line-height: 1.1; margin-bottom: 16px; }
+        .hero p { color: var(--gray-400); font-size: clamp(1rem, 4vw, 1.1rem); max-width: 500px; }
+
+        /* ADDRESS AREA */
+        .address-area {
+            background: var(--gray-100);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .address-val {
+            font-family: 'SF Mono', Menlo, monospace;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--white);
+            word-break: break-all;
+            flex: 1;
+        }
+
+        .button-group { display: flex; gap: 10px; }
+
+        @media (max-width: 600px) {
+            .address-area { flex-direction: column; padding: 20px; text-align: center; }
+            .button-group { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+        }
+
+        /* BUTTONS */
+        .btn {
+            background: var(--white);
+            color: var(--black);
+            border: 1px solid var(--white);
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover { background: transparent; color: var(--white); }
+        .btn-secondary { background: var(--black); color: var(--gray-400); border: 1px solid var(--border); }
+        .btn-secondary:hover { color: var(--white); border-color: var(--white); }
+
+        /* INBOX AREA */
+        .inbox-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--gray-400);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scanning-bar {
+            height: 1px;
+            flex: 1;
+            background: linear-gradient(90deg, transparent, var(--white), transparent);
+            background-size: 200% 100%;
+            animation: scan 1.5s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { background-position: 200% 0; opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { background-position: -200% 0; opacity: 0.2; }
+        }
+
+        /* EXPANDABLE MAIL CARD */
+        .mail-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 12px;
+            background: var(--black);
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .mail-card:hover { border-color: var(--gray-400); }
+        .mail-header { display: flex; justify-content: space-between; align-items: center; }
+        .mail-from { font-weight: 700; color: var(--white); font-size: 0.95rem; }
+        .mail-time { color: var(--gray-400); font-size: 0.75rem; }
+        .mail-subject { color: var(--gray-400); font-size: 0.85rem; margin-top: 4px; }
+        .mail-body {
+            display: none;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            padding: 16px;
+            background: #080808;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: #a1a1a1;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .mail-card.active .mail-body { display: block; }
+
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--gray-400);
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+        }
+
+        /* FOOTER & SOCIALS */
+        footer {
+            flex-shrink: 0;
+            background: var(--black);
+            border-top: 1px solid var(--border);
+            padding: 40px 20px;
+            width: 100%;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .footer-left p { font-size: 0.75rem; color: var(--gray-400); margin-bottom: 4px;}
+
+        .social-group { display: flex; gap: 16px; margin-top: 10px; }
+        .social-link { color: var(--gray-400); font-size: 1.25rem; transition: color 0.2s; }
+        .social-link:hover { color: var(--white); }
+
+        @media (max-width: 600px) {
+            .footer-content { flex-direction: column; align-items: center; gap: 20px; text-align: center; }
+        }
+
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--white);
+            color: var(--black);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<div id="toast">Copied</div>
+
+<div class="container">
+    <nav>
+        <div class="brand"><div class="brand-icon"></div> M2H MAIL</div>
+        <div style="font-size: 0.7rem; color: var(--gray-400);">STATUS: <span style="color:white">LIVE</span></div>
+    </nav>
+
+    <div class="hero" id="hero-view">
+        <h1>Private inbox.</h1>
+        <p>A minimalist disposable email service. Protect your main address from trackers and spam.</p>
+        <button class="btn" onclick="createInbox()" style="margin-top: 32px">
+            Get Started <i class="ph ph-arrow-right"></i>
+        </button>
+    </div>
+
+    <div id="app-view" style="display:none">
+        <div class="address-area">
+            <div class="address-val" id="addr">...</div>
+            <div class="button-group">
+                <button class="btn-secondary btn" onclick="copyEmail()"><i class="ph ph-copy"></i> Copy</button>
+                <button class="btn" onclick="createInbox()"><i class="ph ph-plus"></i> New</button>
+            </div>
+        </div>
+
+        <div class="inbox-title">
+            Inbox
+            <div class="scanning-bar"></div>
+            <span id="timer" style="font-family: monospace; color:white"></span>
+        </div>
+
+        <div id="inbox-content">
+            <div class="empty-state">Waiting for emails...</div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-left">
+            <p>Developed by <strong>M2H Web Solution</strong></p>
+            <p>© 2025 M2H Solutions • All Rights Reserved</p>
+        </div>
+        <div class="social-group">
+            <a href="https://instagram.com/m2hgamerz" target="_blank" class="social-link"><i class="ph-fill ph-instagram-logo"></i></a>
+            <a href="https://t.me/m2hgamerz" target="_blank" class="social-link"><i class="ph-fill ph-telegram-logo"></i></a>
+            <a href="https://github.com/prince-m2hgamerz" target="_blank" class="social-link"><i class="ph-fill ph-github-logo"></i></a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const API = "https://m2htempmail.m2hgamerz.workers.dev";
+    let email = "", expireAt = 0, pollTimer = null;
+
+    function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.innerText = msg;
+        t.style.display = "block";
+        setTimeout(() => t.style.display = "none", 2000);
+    }
+
+    function copyEmail() {
+        if (!email) return;
+        const textArea = document.createElement("textarea");
+        textArea.value = email;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showToast("Copied to Clipboard");
+    }
+
+    async function createInbox() {
+        if(pollTimer) clearInterval(pollTimer);
+        try {
+            const r = await fetch(API + "/api/new");
+            const d = await r.json();
+            email = d.email;
+            expireAt = Date.now() + (d.expires_in * 1000);
+            
+            document.getElementById("hero-view").style.display = "none";
+            document.getElementById("app-view").style.display = "block";
+            document.getElementById("addr").innerText = email;
+            
+            startTimer();
+            pollTimer = setInterval(pollInbox, 1000); 
+            pollInbox();
+            showToast("Address Generated");
+        } catch (e) { showToast("API Connection Error"); }
+    }
+
+    async function pollInbox() {
+        if (!email) return;
+        try {
+            const r = await fetch(API + "/api/inbox?email=" + encodeURIComponent(email));
+            const d = await r.json();
+            const content = document.getElementById("inbox-content");
+            
+            if (d.inbox && d.inbox.length > 0) {
+                if (content.dataset.count != d.inbox.length) {
+                    content.innerHTML = "";
+                    d.inbox.slice().reverse().forEach(m => {
+                        const card = document.createElement('div');
+                        card.className = 'mail-card';
+                        card.onclick = function() { this.classList.toggle('active'); };
+                        card.innerHTML = `
+                            <div class="mail-header">
+                                <span class="mail-from">${m.from}</span>
+                                <span class="mail-time">${new Date(m.arrived_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                            </div>
+                            <div class="mail-subject">${m.subject}</div>
+                            <div class="mail-body">${m.body}</div>
+                        `;
+                        content.appendChild(card);
+                    });
+                    content.dataset.count = d.inbox.length;
+                    document.title = "(1) New Mail!"; // Simple notification
+                }
+            }
+        } catch (e) {}
+    }
+
+    function startTimer() {
+        const timerEl = document.getElementById("timer");
+        const interval = setInterval(() => {
+            const diff = expireAt - Date.now();
+            if (diff <= 0) {
+                timerEl.innerText = "EXPIRED";
+                clearInterval(interval);
+                return;
+            }
+            const m = Math.floor(diff / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            timerEl.innerText = `${m}m ${s}s`;
+        }, 1000);
+    }
+
+    // Reset title when user comes back to the tab
+    window.onfocus = () => { document.title = "M2H Temp Mail | Premium SaaS"; };
+</script>
+
+</body>
+</html>
